@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build release binary
+        run: swift build -c release
+
+      - name: Create app bundle
+        run: bash scripts/bundle-app.sh release
+
+      - name: Create ZIP archive
+        run: |
+          cd build
+          zip -r "GitHub-Sentry.zip" "GitHub Sentry.app"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/GitHub-Sentry.zip
+          generate_release_notes: true
