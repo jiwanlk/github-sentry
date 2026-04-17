@@ -3,8 +3,9 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
-
+      - "v*"
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: macos-latest
